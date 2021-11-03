@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package blog;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "blog/pb";
+
+message Blog {
+    string id = 1;
+    string author_id = 2;
+    string title = 3;
+    string content = 4;
+}
+
+message CreateBlogRequest {
+    Blog blog = 1;
+}
+
+message CreateBlogResponse {
+    string id = 1;
+}
+
+message ReadBlogRequest {
+    string id = 1;
+}
+
+message ReadBlogResponse {
+    Blog blog = 1;
+}
+
+message UpdateBlogRequest {
+    Blog blog = 1;
+}
+
+message DeleteBlogRequest {
+    string id = 1;
+}
+
+message ListBlogResponse {
+    Blog blog = 1;
+}
+
+service BlogService {
+    rpc CreateBlog(CreateBlogRequest) returns (CreateBlogResponse);
+
+    // # Errors
+    //
+    // * `INVALID_ARGUMENT` if ID format is invalid
+    // * `NOT_FOUND` a blog post with given ID is not found
+    rpc ReadBlog(ReadBlogRequest) returns (ReadBlogResponse);
+
+    // # Errors
+    //
+    // * `INVALID_ARGUMENT` if ID format is invalid
+    // * `NOT_FOUND` a blog post with given ID is not found
+    rpc UpdateBlog(UpdateBlogRequest) returns (google.protobuf.Empty);
+
+    // # Errors
+    //
+    // * `INVALID_ARGUMENT` if ID format is invalid
+    // * `NOT_FOUND` a blog post with given ID is not found
+    rpc DeleteBlog(DeleteBlogRequest) returns (google.protobuf.Empty);
+
+    // # Errors
+    //
+    // * `INVALID_ARGUMENT` if ID format is invalid
+    // * `NOT_FOUND` a blog post with given ID is not found
+    rpc ListBlog(google.protobuf.Empty) returns (stream ListBlogResponse);
+}
